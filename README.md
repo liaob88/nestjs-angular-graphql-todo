@@ -1,4 +1,4 @@
-# Todo App
+# Todo App[WIP]
 以下の技術構成で作成した todo アプリです
 - Backend
   - NestJS
@@ -7,5 +7,5 @@
 - Frontend
   - Angular
   - GraphQL Code Generator
-- Other
+- Others
   - ESLint / Prettier
