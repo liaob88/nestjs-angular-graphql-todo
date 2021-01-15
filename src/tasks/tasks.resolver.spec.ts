@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Task } from 'src/graphql.schema';
 import { TaskService } from './task.service';
 import { TasksResolvers } from './tasks.resolver';
-const mockTask = { id: '1', title: 'title', task: 'task' };
-const mockTasks = [
+
+const mockTasks: Task[] = [
   {
     id: '1',
     title: 'title',
@@ -26,19 +27,11 @@ describe('TasksResolvers', () => {
         {
           provide: TaskService,
           useValue: {
-            findAll: jest.fn().mockResolvedValue([
-              {
-                id: '1',
-                title: 'title',
-                task: 'task',
-              },
-              {
-                id: '2',
-                title: 'title',
-                task: 'task',
-              },
-            ]),
-            findOne: jest.fn().mockResolvedValue(mockTask),
+            findAll: jest.fn().mockResolvedValue(mockTasks),
+            findOne: jest.fn().mockImplementation((id: number) => {
+              const task = mockTasks.find((task) => task.id === id.toString());
+              return Promise.resolve(task);
+            }),
           },
         },
       ],
@@ -49,13 +42,14 @@ describe('TasksResolvers', () => {
   });
 
   it('should be defined', () => {
+    console.log('-----', resolvers);
     expect(resolvers).toBeDefined();
   });
 
   describe('getTasks', () => {
-    it('TaskService findAll function will be called', () => {
+    it('TaskService findAll function will be called', async () => {
       jest.spyOn(service, 'findAll');
-      resolvers.getTasks();
+      await resolvers.getTasks();
       expect(service.findAll).toHaveBeenCalled();
     });
 
@@ -65,14 +59,23 @@ describe('TasksResolvers', () => {
   });
 
   describe('getTask', () => {
-    it('TaskService findOne function will be called', () => {
+    it('TaskService findOne function will be called with 1', async () => {
       jest.spyOn(service, 'findOne');
-      resolvers.getTask(1);
+      const result = await resolvers.getTask(1);
       expect(service.findOne).toHaveBeenCalledWith(1);
     });
 
-    it('return mockTasks', async () => {
-      await expect(resolvers.getTask(1)).resolves.toBe(mockTask);
+    describe('return task depend on a id argument', () => {
+      it('when id is 1', async () => {
+        jest.spyOn(service, 'findOne');
+        const result = await resolvers.getTask(1);
+        expect(result).toEqual(mockTasks[0]);
+      });
+      it('when id is 2', async () => {
+        jest.spyOn(service, 'findOne');
+        const result = await resolvers.getTask(2);
+        expect(result).toEqual(mockTasks[1]);
+      });
     });
   });
 });
