@@ -1,26 +1,18 @@
-import { Resolver, Query } from '@nestjs/graphql';
-import { Task } from './task';
+import { Inject, ParseIntPipe } from '@nestjs/common';
+import { Query, Resolver, Args } from '@nestjs/graphql';
+import { TaskService } from './task.service';
 
-@Resolver('Tasks')
-export class TasksResolver {
-  @Query(() => [Task])
-  async getTasks(): Promise<Task[]> {
-    return [
-      {
-        id: 1,
-        title: 'title1',
-        task: 'task1',
-      },
-      {
-        id: 2,
-        title: 'title2',
-        task: 'task2',
-      },
-      {
-        id: 3,
-        title: 'title3',
-        task: 'task3',
-      },
-    ];
+@Resolver('Task')
+export class TasksResolvers {
+  constructor(@Inject(TaskService) private taskService: TaskService) {}
+
+  @Query()
+  async getTasks() {
+    return this.taskService.findAll();
+  }
+
+  @Query()
+  async getTask(@Args('id', ParseIntPipe) id: number) {
+    return this.taskService.findOne(id);
   }
 }
