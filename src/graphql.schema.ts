@@ -6,10 +6,19 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export interface InputTask {
+    title: string;
+    task: string;
+}
+
 export interface Task {
     id: string;
     title: string;
     task: string;
+}
+
+export interface IMutation {
+    createTask(task: InputTask): string | Promise<string>;
 }
 
 export interface IQuery {

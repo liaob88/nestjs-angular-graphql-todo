@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Task } from 'src/graphql.schema';
+import { InputTask, Task } from 'src/graphql.schema';
 import { TaskService } from './task.service';
 import { TasksResolvers } from './tasks.resolver';
 
@@ -32,6 +32,10 @@ describe('TasksResolvers', () => {
               const task = mockTasks.find((task) => task.id === id.toString());
               return Promise.resolve(task);
             }),
+            createOne: jest.fn().mockImplementation((task: InputTask) => {
+              const id = (mockTasks.length + 1).toString();
+              return Promise.resolve(id);
+            }),
           },
         },
       ],
@@ -42,7 +46,6 @@ describe('TasksResolvers', () => {
   });
 
   it('should be defined', () => {
-    console.log('-----', resolvers);
     expect(resolvers).toBeDefined();
   });
 
@@ -76,6 +79,15 @@ describe('TasksResolvers', () => {
         const result = await resolvers.getTask(2);
         expect(result).toEqual(mockTasks[1]);
       });
+    });
+  });
+
+  describe('create new task', () => {
+    const newTask = { title: 'title3', task: 'task3' };
+    it('TaskService function will be called with newTask', async () => {
+      jest.spyOn(service, 'createOne');
+      await resolvers.createTask(newTask);
+      expect(service.createOne).toHaveBeenCalledWith(newTask);
     });
   });
 });
