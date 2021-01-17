@@ -19,6 +19,7 @@ export interface Task {
 
 export interface IMutation {
     createTask(task: InputTask): string | Promise<string>;
+    deleteTask(id?: string): string | Promise<string>;
 }
 
 export interface IQuery {
