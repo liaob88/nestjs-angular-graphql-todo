@@ -30,6 +30,14 @@ export class TaskService {
     return insertResult.identifiers[0]['id'];
   }
 
+  async updateOne(id: number, { title, task }: InputTask) {
+    await this.taskRepository.update(id, {
+      title,
+      task,
+    });
+    return `updated the task whose id is ${id}`;
+  }
+
   async deleteOne(id: number) {
     await this.taskRepository.delete(id);
     return `deleted the task whose id is ${id}`;

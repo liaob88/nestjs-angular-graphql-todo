@@ -36,6 +36,15 @@ describe('TasksResolvers', () => {
               const id = (mockTasks.length + 1).toString();
               return Promise.resolve(id);
             }),
+            updateOne: jest
+              .fn()
+              .mockImplementation((id: number, task: InputTask) => {
+                let targetTask = mockTasks.find(
+                  (task) => task.id === id.toString(),
+                );
+                targetTask = { ...targetTask, ...task };
+                return Promise.resolve(targetTask);
+              }),
             deleteOne: jest.fn().mockImplementation((id: number) => {
               const newTasks = mockTasks.filter(
                 (task) => task.id === id.toString(),
@@ -94,6 +103,18 @@ describe('TasksResolvers', () => {
       jest.spyOn(service, 'createOne');
       await resolvers.createTask(newTask);
       expect(service.createOne).toHaveBeenCalledWith(newTask);
+    });
+  });
+
+  describe('update specified task', () => {
+    const input = {
+      title: 'updated title',
+      task: 'updated task',
+    };
+    it('TaskService function will be called with specified id and input', async () => {
+      jest.spyOn(service, 'updateOne');
+      await resolvers.updateTask(1, input);
+      expect(service.updateOne).toHaveBeenCalledWith(1, input);
     });
   });
 
