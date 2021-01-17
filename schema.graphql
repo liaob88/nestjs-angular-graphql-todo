@@ -11,6 +11,7 @@ input InputTask {
 
 type Mutation {
   createTask(task: InputTask!): String!
+  deleteTask(id: String): String!
 }
 
 type Query {

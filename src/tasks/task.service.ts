@@ -29,4 +29,9 @@ export class TaskService {
       .execute();
     return insertResult.identifiers[0]['id'];
   }
+
+  async deleteOne(id: number) {
+    await this.taskRepository.delete(id);
+    return `deleted the task whose id is ${id}`;
+  }
 }

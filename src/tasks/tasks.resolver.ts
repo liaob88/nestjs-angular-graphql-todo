@@ -22,4 +22,10 @@ export class TasksResolvers {
     const result = await this.taskService.createOne(task);
     return result;
   }
+
+  @Mutation()
+  async deleteTask(@Args('id') id: number) {
+    const result = await this.taskService.deleteOne(id);
+    return result;
+  }
 }
