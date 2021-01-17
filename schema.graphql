@@ -4,6 +4,15 @@ type Task {
   task: String!
 }
 
+input InputTask {
+  title: String!
+  task: String!
+}
+
+type Mutation {
+  createTask(task: InputTask!): String!
+}
+
 type Query {
   getTasks: [Task!]!
   getTask(id: ID!): Task!

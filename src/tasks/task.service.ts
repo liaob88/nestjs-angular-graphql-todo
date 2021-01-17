@@ -1,6 +1,6 @@
-import { Task } from './../graphql.schema';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { InputTask, Task } from './../graphql.schema';
 import { TaskEntity } from './task';
 
 export class TaskService {
@@ -15,5 +15,18 @@ export class TaskService {
 
   async findOne(id: number): Promise<Task> {
     return this.taskRepository.findOne(id);
+  }
+
+  async createOne({ title, task }: InputTask): Promise<String> {
+    const insertResult = await this.taskRepository
+      .createQueryBuilder()
+      .insert()
+      .into(TaskEntity)
+      .values({
+        title,
+        task,
+      })
+      .execute();
+    return insertResult.identifiers[0]['id'];
   }
 }
