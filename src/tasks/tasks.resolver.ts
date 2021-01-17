@@ -24,6 +24,12 @@ export class TasksResolvers {
   }
 
   @Mutation()
+  async updateTask(@Args('id') id: number, @Args('task') task: InputTask) {
+    const result = await this.taskService.updateOne(id, task);
+    return result;
+  }
+
+  @Mutation()
   async deleteTask(@Args('id') id: number) {
     const result = await this.taskService.deleteOne(id);
     return result;
