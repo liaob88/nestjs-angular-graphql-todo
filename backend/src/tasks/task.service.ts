@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { InputTask, Task } from './../graphql.schema';
+import { InputTask, Task } from '../graphql.schema';
 import { TaskEntity } from './task';
 
 export class TaskService {

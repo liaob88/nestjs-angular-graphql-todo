@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { InputTask, Task } from 'src/graphql.schema';
+import { InputTask, Task } from 'backend/src/graphql.schema';
 import { TaskService } from './task.service';
 import { TasksResolvers } from './tasks.resolver';
 

@@ -1,7 +1,7 @@
 import { Inject, ParseIntPipe } from '@nestjs/common';
 import { Query, Resolver, Args, Mutation } from '@nestjs/graphql';
 import { TaskService } from './task.service';
-import { InputTask } from 'src/graphql.schema';
+import { InputTask } from 'backend/src/graphql.schema';
 
 @Resolver('Task')
 export class TasksResolvers {
