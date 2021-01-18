@@ -18,7 +18,8 @@ jobs:
           paths:
             - ./node_modules
       - run:
+          name: cd backend
+          command: cd backend
+      - run:
           name: test
           command: npm test
-
-
